@@ -3,6 +3,12 @@
     <div class="col-md-4 form-field">
       <mat-form-field>
         <input matInput placeholder="Form Name" formControlName="formName">
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['formName'].hasError('maxlength')">
+          Maximum length must be <strong>50</strong>
+        </mat-error>
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['formName'].hasError('required')">
+          Form name is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="col-md-2 form-field">
@@ -16,21 +22,33 @@
         <mat-select placeholder="Select Type" formControlName="type">
           <mat-option *ngFor="let option of inputTypes" value="{{option.value}}">{{option.name}}</mat-option>
         </mat-select>
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['type'].hasError('required')">
+          Input type is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="col-md-3 form-field">
       <mat-form-field>
         <input matInput placeholder="Default Value" formControlName="defaultValue" />
+        <mat-hint>Default value is optional</mat-hint>
       </mat-form-field>
     </div>
     <div class="col-md-3 form-field">
       <mat-form-field>
         <input matInput placeholder="Name" formControlName="name" />
+        <mat-hint>This defines the name of field in Form generated</mat-hint>
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['name'].hasError('required')">
+          Name <strong>required</strong>
+        </mat-error>
       </mat-form-field>
     </div>
     <div class="col-md-3 form-field">
       <mat-form-field>
         <input matInput type="number" placeholder="Order Number" formControlName="order" />
+        <mat-hint>Order of displaying fields</mat-hint>
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['order'].hasError('required')">
+          Order is <strong>required</strong>
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -46,6 +64,9 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
             (matChipInputTokenEnd)="addOptions($event)">
         </mat-chip-list>
+        <mat-error *ngIf="isSubmitted && cygnetForm.controls['options'].hasError('required')">
+          Options are <strong>required</strong>
+        </mat-error>
       </mat-form-field>
     </div>
   </div>

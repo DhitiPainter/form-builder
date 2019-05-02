@@ -1,13 +1,15 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
-import { FormInputType } from './../common/enum';
-import { EnumHelper } from './../common/helper/enum.helper';
-import { InputBase } from './input-base';
-import { InputOption } from './input-option';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
+
 import { SnackbarService } from '../common/service/snackbar.service';
+import { FormService } from '../common/service/form.service';
+import { EnumHelper } from './../common/helper/enum.helper';
+
+import { FormInputType } from './../common/enum';
+import { InputBase } from './input-base';
+import { InputOption } from './input-option';
 
 @Component({
   selector: 'app-form-creator',
@@ -16,13 +18,14 @@ import { SnackbarService } from '../common/service/snackbar.service';
 })
 export class FormCreatorComponent implements OnInit {
 
+  isSubmitted: boolean = false;
   inputTypes: any;
   cygnetForm: FormGroup;
   options: InputOption[] = [];
+  formName: string = '';
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  @Output() formControls: EventEmitter<InputBase> = new EventEmitter<InputBase>();
 
-  constructor(private snackService: SnackbarService) { }
+  constructor(private snackService: SnackbarService, private formService: FormService) { }
 
   ngOnInit() {
     this.inputTypes = EnumHelper.getEnumWithDescriptions(FormInputType);
@@ -40,12 +43,10 @@ export class FormCreatorComponent implements OnInit {
 
   createForm() {
     this.cygnetForm = new FormGroup({
-      formName: new FormControl('', [Validators.maxLength(50)]),
-      // typeArray: new FormArray([])
+      formName: new FormControl('', [Validators.maxLength(50), Validators.required]),
       type: new FormControl('', [Validators.required]),
-      defaultValue: new FormControl('', [Validators.required]),
+      defaultValue: new FormControl('', []),
       name: new FormControl('', [Validators.required]),
-      // options: new FormControl('', []),
       order: new FormControl('', [Validators.required]),
     });
   }
@@ -53,7 +54,7 @@ export class FormCreatorComponent implements OnInit {
   addOptions(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-    // Add our fruit
+    // Add option
     if ((value || '').trim()) {
       this.options.push({ name: value.trim(), value: value.trim() });
     }
@@ -61,6 +62,7 @@ export class FormCreatorComponent implements OnInit {
     if (input) {
       input.value = '';
     }
+    this.cygnetForm.controls.options.setValue(this.options);
   }
 
   removeOptions(option: InputOption): void {
@@ -68,6 +70,7 @@ export class FormCreatorComponent implements OnInit {
     if (index >= 0) {
       this.options.splice(index, 1);
     }
+    this.cygnetForm.controls.options.setValue(this.options);
   }
 
   onSubmit() {
@@ -76,13 +79,37 @@ export class FormCreatorComponent implements OnInit {
       || parseInt(buildForm.type, 10) === FormInputType.radio) {
       buildForm.options = this.options;
     }
-    // if (this.cygnetForm.valid) {
-    //   this.formControls.emit(buildForm);
-    // } else {
-    //   this.snackService.notify('Form is not valid');
-    // }
-    this.formControls.emit(buildForm);
-    console.log(this.formControls);
+    this.isSubmitted = true;
+    if (this.cygnetForm.valid) {
+      if (!this.cygnetForm.controls.type.value) {
+        this.snackService.notify('Input type is missing');
+        return;
+      }
+      this.formName = this.cygnetForm.value.formName;
+      this.isSubmitted = false;
+      // this.cygnetForm.reset();
+      this.clearValidators('type');
+      this.clearValidators('name');
+      this.clearValidators('order');
+      // Set default values
+      this.cygnetForm.controls.formName.setValue(this.formName);
+      this.cygnetForm.controls.type.setValue('');
+      this.cygnetForm.controls.type.setValidators([Validators.required]);
+      this.cygnetForm.controls.name.setValue('');
+      this.cygnetForm.controls.name.setValidators([Validators.required]);
+      this.cygnetForm.controls.order.setValue('');
+      this.cygnetForm.controls.order.setValidators([Validators.required]);
+      // Add value to subscribe
+      this.formService.update(buildForm);
+    } else {
+      this.snackService.notify('Form is not valid');
+    }
+  }
+
+  clearValidators(controllerName) {
+    this.cygnetForm.controls[controllerName].clearValidators();
+    this.cygnetForm.controls[controllerName].updateValueAndValidity({ emitEvent: false, onlySelf: true });
+    this.cygnetForm.updateValueAndValidity({ emitEvent: false, onlySelf: true });
   }
 
 }

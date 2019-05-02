@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { FormCreatorComponent } from './form-creator/form-creator.component';
 import { DynamicFormGeneratorComponent } from './dynamic-form-generator/dynamic-form-generator.component';
+import { FormService } from './common/service/form.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +24,7 @@ import { DynamicFormGeneratorComponent } from './dynamic-form-generator/dynamic-
     FormsModule,
     SharedModule
   ],
-  providers: [],
+  providers: [FormService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

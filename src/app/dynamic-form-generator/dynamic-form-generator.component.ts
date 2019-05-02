@@ -1,57 +1,51 @@
-import { Component, OnInit, OnChanges, Input, SimpleChange, SimpleChanges, DoCheck } from '@angular/core';
-import { InputBase } from '../form-creator/input-base';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { EnumHelper } from './../common/helper/enum.helper';
+
+import { FormService } from '../common/service/form.service';
+
 import { FormInputType } from './../common/enum';
+import { InputBase } from '../form-creator/input-base';
 
 @Component({
   selector: 'app-dynamic-form-generator',
   templateUrl: './dynamic-form-generator.component.html',
   styleUrls: ['./dynamic-form-generator.component.scss']
 })
-export class DynamicFormGeneratorComponent implements OnInit, OnChanges, DoCheck {
+export class DynamicFormGeneratorComponent implements OnInit {
 
-  private _formControls: any;
+  formName: string;
   dynamicform: FormGroup;
   inputTypes = FormInputType;
-  // Intercept input property changes with a setter
-  @Input() formControls: InputBase[] = []
-  // set formControls(formControls: InputBase[]) {
-  //   this._formControls = formControls || null;
-  // }
+  formControls: InputBase[] = [];
 
-  // get formControls(): InputBase[] | null {
-  //   return this._formControls;
-  // }
-
-  constructor() { }
-
-  ngDoCheck() {
-    if (this.formControls && this.formControls.length > 0 && this.dynamicform) {
-      this.dynamicform = new FormGroup({});
-      this.formControls.forEach((c: InputBase) => {
-        this.dynamicform.addControl(c.name, new FormControl(c.defaultValue, []));
-      })
-
-    }
-    console.log(this.formControls, this.dynamicform);
-  }
-
-  ngOnChanges(change: any) {
-    // if (this.formControls && this.formControls.length > 0) {
-    //   this.dynamicform = new FormGroup({});
-    //   this.formControls.forEach((c: InputBase) => {
-    //     this.dynamicform.addControl(c.name, new FormControl(c.defaultValue, []));
-    //   })
-
-    // }
-    // console.log(this.formControls, this.dynamicform);
-    // this.dynamicform.addControl()
-  }
+  constructor(private formService: FormService) { }
 
   ngOnInit() {
     this.dynamicform = new FormGroup({});
-    // this.inputTypes. // =  EnumHelper.get(FormInputType);
+
+    this.formService.FormControls.subscribe((res: any) => {
+      this.formName = res.formName;
+      if (res && this.dynamicform) {
+        this.formControls.push(res);
+        // Sort formControls
+        this.sortControls();
+        // Add form field on update
+        this.formControls.forEach((c: InputBase) => {
+          this.dynamicform.addControl(c.name, new FormControl(c.defaultValue, []));
+        });
+      }
+    });
   }
 
+  sortControls() {
+    return this.formControls.sort((a, b) => {
+      return a.order - b.order;
+    });
+  }
+
+  removeField(input: InputBase) {
+    console.log(input);
+    this.formControls.splice(this.formControls.indexOf(this.formControls.find(x => x.name === input.name)), 1)
+    this.dynamicform.removeControl(input.name);
+  }
 }

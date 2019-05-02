@@ -4,7 +4,7 @@ import {
   MatButtonModule, MatCheckboxModule, MatCardModule, MatAutocompleteModule,
   MatFormFieldModule, MatInputModule, MatRadioModule, MatSelectModule,
   MatChipsModule, MatIconModule, MatTooltipModule, MatSnackBarModule,
-  MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter, MatDatepickerModule
+  MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter, MatDatepickerModule, MatDividerModule
 } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
@@ -26,7 +26,8 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatDividerModule
   ],
   exports: [
     MatButtonModule,
@@ -41,7 +42,8 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
     MatIconModule,
     MatTooltipModule,
     MatSnackBarModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatDividerModule
   ],
   providers: [
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

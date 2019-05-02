@@ -1,0 +1,33 @@
+
+.form{
+    background: aliceblue;
+    padding: 20px;
+    .form-field{
+        background: white;
+        border-radius: 20px;
+        padding: 10px 60px 0px 10px;
+        margin-bottom: 5px;
+        mat-radio-button{
+            padding-right: 12px;
+            label {
+                .mat-radio-label-content{
+                    padding-left: 3px !important;
+                }
+            }
+        }
+        mat-datepicker-toggle{            
+            button.mat-icon-button{
+                float: right !important;
+            }            
+        }
+    }
+    span.remove-field {
+        float: right;
+        margin-right: -36px;
+        margin-top: 20px;
+        position: relative;
+        mat-icon:hover {
+            cursor: pointer;
+        }
+    }
+}

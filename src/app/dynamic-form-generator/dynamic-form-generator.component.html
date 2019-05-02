@@ -1,12 +1,17 @@
+<div class="title form-title">
+  <h2>{{formName}}</h2>
+</div>
+<mat-divider></mat-divider>
+
 <form [formGroup]="dynamicform" class="form">
   <div *ngFor="let control of formControls">
     <div class="row">
-      <div class="col-sm-3 offset-4 form-field">
+      <div class="col-sm-6 offset-3 form-field">
         <mat-form-field [ngSwitch]="control.type">
           <!-- input text -->
           <div *ngSwitchCase="inputTypes.input">
-            <input matInput placeholder="{{control.name}}" [defaultValue]="control.defaultValue"
-              formControlName="{{control.name}}">
+            <input matInput placeholder="{{control.name}}"
+              [defaultValue]="control.defaultValue ? control.defaultValue : ''" formControlName="{{control.name}}">
           </div>
 
           <!-- select -->
@@ -18,14 +23,15 @@
 
           <!-- textarea -->
           <div *ngSwitchCase="inputTypes.textarea">
-            <textarea matInput [defaultValue]="control.defaultValue" placeholder="{{control.name}}"
-              formControlName="{{control.name}}"></textarea>
+            <textarea matInput [defaultValue]="control.defaultValue ? control.defaultValue : ''"
+              placeholder="{{control.name}}" formControlName="{{control.name}}"></textarea>
           </div>
 
           <!-- date selection -->
           <div *ngSwitchCase="inputTypes.date">
-            <input matInput [defaultValue]="control.defaultValue" placeholder="{{control.name}}"
-              formControlName="{{control.name}}" [matDatepicker]="picker" (focus)="picker.open()" />
+            <input matInput [defaultValue]="control.defaultValue ? control.defaultValue : ''"
+              placeholder="{{control.name}}" formControlName="{{control.name}}" [matDatepicker]="picker"
+              (focus)="picker.open()" />
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </div>
@@ -40,6 +46,9 @@
             </mat-radio-group>
           </div>
         </mat-form-field>
+        <span class="remove-field">
+          <mat-icon (click)="removeField(control)">cancel</mat-icon>
+        </span>
       </div>
     </div>
   </div>
