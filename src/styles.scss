@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./../node_modules/@angular/material/prebuilt-themes/indigo-pink";
+@import "./../node_modules/material-icons/iconfont/material-icons.css";
+
+.form{
+    .row .form-field {
+        mat-form-field{
+            width: 100%;
+        }
+        button {
+            float: left;
+        }
+    }
+}
+
+.red{
+    color: red;
+}
+
+.amber{
+    color: #FFBF00;
+    font-weight: 400;
+}

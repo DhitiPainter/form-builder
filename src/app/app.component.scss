@@ -1,0 +1,25 @@
+mat-card-header{    
+    &.mat-card-header{
+        margin-top: -20px;    
+    }
+    .card-header-image {
+        background-image: url('./../assets/cygnet-logo.png');
+        background-size: cover;
+        &.mat-card-avatar{
+            height: 65px;
+            width: 200px;
+            border-radius: 0;
+        }        
+    }
+    mat-card-title {
+        &.card-title{
+            margin: 20px;
+            color: dimgrey;
+        }
+    }
+}
+
+app-form-creator {
+    text-align: center;
+}
+  

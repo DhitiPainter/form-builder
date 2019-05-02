@@ -1,0 +1,46 @@
+<form [formGroup]="dynamicform" class="form">
+  <div *ngFor="let control of formControls">
+    <div class="row">
+      <div class="col-sm-3 offset-4 form-field">
+        <mat-form-field [ngSwitch]="control.type">
+          <!-- input text -->
+          <div *ngSwitchCase="inputTypes.input">
+            <input matInput placeholder="{{control.name}}" [defaultValue]="control.defaultValue"
+              formControlName="{{control.name}}">
+          </div>
+
+          <!-- select -->
+          <div *ngSwitchCase="inputTypes.select">
+            <mat-select placeholder="Select {{control.name}}" formControlName="{{control.name}}">
+              <mat-option *ngFor="let item of control.options" value="{{item.value}}">{{item.name}}</mat-option>
+            </mat-select>
+          </div>
+
+          <!-- textarea -->
+          <div *ngSwitchCase="inputTypes.textarea">
+            <textarea matInput [defaultValue]="control.defaultValue" placeholder="{{control.name}}"
+              formControlName="{{control.name}}"></textarea>
+          </div>
+
+          <!-- date selection -->
+          <div *ngSwitchCase="inputTypes.date">
+            <input matInput [defaultValue]="control.defaultValue" placeholder="{{control.name}}"
+              formControlName="{{control.name}}" [matDatepicker]="picker" (focus)="picker.open()" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+
+          <!-- radio buttons -->
+          <div *ngSwitchCase="inputTypes.radio">
+            <mat-radio-group #radioGroup="matRadioGroup">
+              <mat-radio-button *ngFor="let item of control.options" [value]="item.value">
+                {{item.name}}
+              </mat-radio-button>
+              <input matInput formControlName="{{control.name}}" [value]="radioGroup.value" />
+            </mat-radio-group>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</form>
