@@ -10,4 +10,17 @@
   </mat-card-content>
 </mat-card>
 
-<app-dynamic-form-generator></app-dynamic-form-generator>
+<div *ngIf="showForm">
+  <app-dynamic-form-generator (isSubmitted)="onSubmitResponse($event)"></app-dynamic-form-generator>
+</div>
+
+<div *ngIf="!showForm" class="response">
+  <mat-card>
+    <mat-card-content>
+      Response submitted successfully!
+      <span>
+        <mat-icon (click)="showForm = !showForm">cancel</mat-icon>
+      </span>
+    </mat-card-content>
+  </mat-card>
+</div>

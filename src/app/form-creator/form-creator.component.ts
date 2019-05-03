@@ -29,7 +29,6 @@ export class FormCreatorComponent implements OnInit {
 
   ngOnInit() {
     this.inputTypes = EnumHelper.getEnumWithDescriptions(FormInputType);
-    console.log(this.inputTypes);
     this.createForm();
 
     this.cygnetForm.controls.type.valueChanges.subscribe((t: any) => {
@@ -99,6 +98,7 @@ export class FormCreatorComponent implements OnInit {
       this.cygnetForm.controls.name.setValidators([Validators.required]);
       this.cygnetForm.controls.order.setValue('');
       this.cygnetForm.controls.order.setValidators([Validators.required]);
+      this.cygnetForm.controls.defaultValue.setValue('');
       // Add value to subscribe
       this.formService.update(buildForm);
     } else {

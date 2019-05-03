@@ -8,4 +8,9 @@ import { InputBase } from './form-creator/input-base';
 })
 export class AppComponent {
   title = 'cygnet-forms-web';
+  showForm: boolean = true;
+
+  onSubmitResponse(event: any) {
+    this.showForm = !event;
+  }
 }

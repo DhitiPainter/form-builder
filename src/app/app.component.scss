@@ -22,4 +22,21 @@ mat-card-header{
 app-form-creator {
     text-align: center;
 }
+
+.response{
+    margin: 30px;
+    width: 400px;
+    mat-card{
+        background: aliceblue;
+        color: darkblue;
+        font-weight: 500;
+        mat-icon{
+            position: absolute;
+            right: 20px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}
   

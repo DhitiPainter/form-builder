@@ -24,7 +24,10 @@
 
 .title{
     color: dimgrey;
-}
-.form-title {
-    text-align: center;
+    &.form-title {
+        text-align: center;
+        mat-icon:hover{
+            cursor: pointer;
+        }
+    }
 }
